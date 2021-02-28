@@ -7,6 +7,11 @@
   height: 100vh;
 }
 
+<<<<<<< HEAD
 .edit {
   padding: 10px;
+=======
+.edit{
+    margin: 10px;
+>>>>>>> b1f0f69119ba8dcb7bfd2596d2d537f5c92252aa
 }

@@ -6,3 +6,7 @@
   display: flex;
   height: 100vh;
 }
+
+.edit{
+    margin: 10px;
+}

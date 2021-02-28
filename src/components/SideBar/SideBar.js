@@ -20,11 +20,16 @@ import PersonIcon from '@material-ui/icons/Person';
 import DuoIcon from '@material-ui/icons/Duo';
 import PhoneIcon from '@material-ui/icons/Phone';
 
-function SideBar() {
+//redux
+import { connect } from "react-redux";
+import { openSendMessage } from "../../redux/action/mailSliceAction";
+
+function SideBar(props) {
     return (
         <div className="sidebar">
             <Button className="sidebar__compose" 
-                startIcon={<AddIcon style={{fontSize : 40}}/>}
+                startIcon={<AddIcon style={{ fontSize: 40 }} />}
+                onClick ={() => props.openSendMessage()}
             >
                 Compose
             </Button> 
@@ -59,4 +64,10 @@ function SideBar() {
     )
 }
 
-export default SideBar
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSendMessage : () => dispatch(openSendMessage())
+    }
+}
+
+export default connect(undefined, mapDispatchToProps)(SideBar);

@@ -12,8 +12,13 @@ import Header from './components/Header/Header';
 import SideBar from './components/SideBar/SideBar';
 import Mail from './components/Mail/Mail';
 import EmailList from './components/EmailList/EmailList';
+import SendMail from './components/SendMail/SendMail';
 
-function App() {
+//redux
+import {connect} from 'react-redux'
+import { openSendMessage,closeSendMessage } from "./redux/action/mailSliceAction";
+
+function App(props) {
   return (
     <Router>
       <div className='app'>
@@ -25,10 +30,17 @@ function App() {
             <Route path="/" component={EmailList} />
           </Switch>
         </div>
+        {props.mailSender && <SendMail />}
       </div>
     </Router>
     
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    mailSender: state.mailSlice.sendMessageIsOpen
+  }
+}
+
+export default connect(mapStateToProps,undefined)( App);

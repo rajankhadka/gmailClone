@@ -6,12 +6,16 @@ import {
     ArrowBack, CheckCircle,
     Delete, Email, Error,
     ExitToApp,
-    LabelImportant, MoreVert, MoveToInbox, Print, UnfoldMore, WatchLater
+    LabelImportant, MoreVert,
+    MoveToInbox, Print, UnfoldMore, WatchLater
 } from '@material-ui/icons';
 
 import { useHistory } from "react-router-dom";
 
-function Mail() {
+//redux
+import { connect } from "react-redux";
+
+function Mail(props) {
     const history = useHistory();
     return (
         <div className="mail">
@@ -70,17 +74,23 @@ function Mail() {
             </div>
             <div className="mail__body">
                 <div className="mail__bodyHeader">
-                    <h2>Subject</h2>
+                    <h2>{props.selectmailReducer?.subject }</h2>
                     <LabelImportant className="mail__important" />
-                    <p>Title</p>
-                    <p className="mail__time">10pm</p>
+                    <p>{props.selectmailReducer?.title }</p>
+                    <p className="mail__time">{props.selectmailReducer?.time }</p>
                 </div>
                 <div className="mail__message">
-                    <p>This is a message</p>
+                    <p>{props.selectmailReducer?.description }</p>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Mail
+const mapStateToProps = state => {
+    return {
+        selectmailReducer:state.mailSlice.selectmailReducer
+    }
+}
+
+export default connect(mapStateToProps, undefined)(Mail);

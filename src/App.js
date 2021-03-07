@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from 'react-router-dom';
 
 //importing components
@@ -16,22 +15,46 @@ import SendMail from './components/SendMail/SendMail';
 
 //redux
 import {connect} from 'react-redux'
-import { openSendMessage,closeSendMessage } from "./redux/action/mailSliceAction";
+import { login,logout } from "./redux/action/userSliceAction";
+import Login from './components/Login/Login';
+
+import { auth } from "./firebase";
 
 function App(props) {
+  console.log("App.js", props.userSlice);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        props.loginAction({
+          displayName: user.displayName,
+          email: user.email,
+          photoUrl: user.photoURL
+        });
+      }
+    });
+  });
+
   return (
     <Router>
-      <div className='app'>
-        <Header />
-        <div className="app__body">
-          <SideBar />
-          <Switch>
-            <Route path='/mail' component={Mail} />
-            <Route path="/" component={EmailList} />
-          </Switch>
-        </div>
-        {props.mailSender && <SendMail />}
-      </div>
+      {
+        !props.userSlice
+          ? <Login />
+          : <div className='app'>
+              <Header />
+              <div className="app__body">
+                <SideBar />
+                <Switch>
+                  <Route path='/mail' component={Mail} />
+                  <Route path="/" component={EmailList} />
+                </Switch>
+              </div>
+              {props.mailSender && <SendMail />}
+            </div>
+          
+      }
+
+      
     </Router>
     
   );
@@ -39,8 +62,16 @@ function App(props) {
 
 const mapStateToProps = state => {
   return {
-    mailSender: state.mailSlice.sendMessageIsOpen
+    mailSender: state.mailSlice.sendMessageIsOpen,
+    userSlice: state.userSliceReducers.user
   }
 }
 
-export default connect(mapStateToProps,undefined)( App);
+const mapDispatchToProps = dispatch => {
+  return {
+    loginAction: (data) => dispatch(login(data)),
+    logoutAction: () => dispatch(logout())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)( App);

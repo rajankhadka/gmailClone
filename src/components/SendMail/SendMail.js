@@ -9,11 +9,23 @@ import { Button, IconButton } from '@material-ui/core';
 import { connect } from "react-redux";
 import { closeSendMessage } from "../../redux/action/mailSliceAction";
 
+//firebase
+import { db} from "../../firebase"; 
+import firebase from "firebase";
+
 function SendMail(props) {
     const { register, handleSubmit, watch, errors } = useForm();
 
     const onSubmit = formdata => {
         console.log(formdata)
+        db.collection('emails').add({
+            to: formdata.to,
+            subject: formdata.subject,
+            message: formdata.message,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        props.closeSendMessage();
     }
 
     return (

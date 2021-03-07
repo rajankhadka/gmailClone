@@ -11,3 +11,10 @@ export const closeSendMessage = () => {
         type: actionTypes.CloseSendMessage,
     }
 }
+
+export const selectmailAction = (data) => {
+    return {
+        type: actionTypes.SELECTMAIL,
+        payload : data
+    }
+}

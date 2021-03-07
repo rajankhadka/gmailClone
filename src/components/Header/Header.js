@@ -13,7 +13,19 @@ import HelpIcon from '@material-ui/icons/Help';
 //material core
 import { IconButton,Avatar } from '@material-ui/core';
 
-function Header() {
+//redux
+import { connect} from "react-redux";
+import { logout} from "../../redux/action/userSliceAction";
+import { auth } from '../../firebase';
+
+function Header(props) {
+
+    const signOut = () => {
+        auth.signOut().then(() => {
+            props.logoutAction();
+        });
+    };
+
     return (
         <div className="header">
             <div className="header__left">
@@ -47,10 +59,22 @@ function Header() {
                 <IconButton >
                     <AppsIcon />
                 </IconButton>
-                <Avatar />
+                <Avatar src={props.userSlice.photoUrl} onClick={signOut} />
             </div>
         </div>
     )
 }
 
-export default Header
+const mapStateToProps = state => {
+    return {
+        userSlice: state.userSliceReducers.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logoutAction: () => dispatch(logout()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

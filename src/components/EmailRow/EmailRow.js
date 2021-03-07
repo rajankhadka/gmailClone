@@ -6,11 +6,24 @@ import { LabelImportantOutlined, StarBorderOutlined } from '@material-ui/icons';
 
 import { useHistory } from "react-router-dom";
 
-function EmailRow({ title, subject, description, time, id }) {
+//redux
+import { connect} from "react-redux";
+import { selectmailAction } from "../../redux/action/mailSliceAction";
+
+function EmailRow({ title, subject, description, time, id,selectmailAction }) {
     const history = useHistory();
     
+    const openMail = () => {
+        selectmailAction({
+            id,
+            title,
+            subject,description,time
+        });
+        history.push('/mail')
+    }
+
     return (
-        <div className="emailRow" onClick={()=> history.push('/mail')}>
+        <div className="emailRow" onClick={()=> openMail()}>
             <div className="emailRow__options">
                 <Checkbox />
                 <IconButton>
@@ -41,4 +54,11 @@ function EmailRow({ title, subject, description, time, id }) {
     )
 }
 
-export default EmailRow;
+const mapDispatchToProps = dispatch => {
+    return {
+        selectmailAction: (data) => dispatch(selectmailAction(data)),
+    }
+    
+}
+
+export default connect(undefined,mapDispatchToProps) (EmailRow);

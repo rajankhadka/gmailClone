@@ -1,7 +1,8 @@
 import {actionTypes} from "../action/actionTypes"
 
 const initialState = {
-    sendMessageIsOpen : false,
+    sendMessageIsOpen: false,
+    selectmailReducer: null,
 }
 
 const mailSliceReducer = (state = initialState, action) => {
@@ -17,6 +18,13 @@ const mailSliceReducer = (state = initialState, action) => {
                 ...state,
                 sendMessageIsOpen: false
             }
+        
+        case actionTypes.SELECTMAIL:
+            return {
+                ...state,
+                selectmailReducer : action.payload
+            }
+        
         default:
             return state
     }

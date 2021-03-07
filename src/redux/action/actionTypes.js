@@ -1,4 +1,10 @@
 export const actionTypes = {
     CloseSendMessage: "CloseSendMessage",
-    OpenSendMessage: "OpenSendMessage"
+    OpenSendMessage: "OpenSendMessage",
+    SELECTMAIL : "SELECTMAIL",
+}
+
+export const userTypes = {
+    LOGINUSER: "LOGINUSER",
+    LOGOUTUSER: "LOGOUTUSER",
 }
